@@ -13,3 +13,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.my-custom-marker {
+  border-radius: 50% !important;
+}

@@ -1,13 +1,11 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import {deletePlace} from "../services/placeService.js";
 import L from "leaflet";
 
-// ✅ Use import URLs instead of require()
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
-import {Link} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.jsx";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -32,6 +30,14 @@ export default function MapView({ places = [], onDelete }) {
         }
     }
 
+    const customIcon = useMemo(() => L.icon({
+        iconUrl: '/map-marker.png', // <- reemplaza por tu imagen
+        iconSize: [40, 50], // tamaño del icono en px
+        iconAnchor: [24, 48], // punto del icono que apunta a la coordenada (centro inferior)
+        popupAnchor: [0, -46], // donde aparece el popup relativo al anchor
+        className: 'my-custom-marker' // clase para estilos adicionales si quieres
+    }), []);
+
     return (
         <MapContainer
             center={center}
@@ -39,12 +45,13 @@ export default function MapView({ places = [], onDelete }) {
             style={{ height: "100%", width: "100%" }}
         >
             <TileLayer
-                attribution='© OpenStreetMap contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ext={'jpg'}
+                url='https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}'
+            attribution='&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
 
             {places.map((place) => (
-                <Marker key={place.id} position={[place.lat, place.lng]}>
+                <Marker key={place.id} position={[place.lat, place.lng]} icon={customIcon}>
                     <Popup>
                             <strong className={'text-gray-900 font-semibold text-md uppercase mb-4'}>{place.title}</strong>
                             <p className={'text-gray-700 m-0'}>{place.description}</p>

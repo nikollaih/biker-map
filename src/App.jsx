@@ -18,7 +18,7 @@ export default function App() {
     }, []);
 
     return (
-        <div style={{ height: "100vh", display: "flex", flexDirection: "column", width: '100vw' }}>
+        <div className={'h-[100vh] flex flex-col w-full'}>
             <Header setOpen={setOpen} />
             <main className={'flex-1'}>
                 {
