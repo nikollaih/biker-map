@@ -46,39 +46,39 @@ export default function MapView({ places = [], onDelete }) {
             {places.map((place) => (
                 <Marker key={place.id} position={[place.lat, place.lng]}>
                     <Popup>
-                        <strong className={'text-gray-900 font-semibold text-md uppercase mb-4'}>{place.title}</strong>
-                        <p className={'text-gray-700 m-0'}>{place.description}</p>
+                            <strong className={'text-gray-900 font-semibold text-md uppercase mb-4'}>{place.title}</strong>
+                            <p className={'text-gray-700 m-0'}>{place.description}</p>
 
-                        {
-                            place?.url && (
-                                <a
-                                    href={place.url}
-                                    target={'_blank'}
-                                    className={'!text-orange-600 underline mt-4'}
-                                >VER ENLACE</a>
-                            )
-                        }
+                            {
+                                place?.url && (
+                                    <a
+                                        href={place.url}
+                                        target={'_blank'}
+                                        className={'!text-orange-600 underline mt-4'}
+                                    >VER ENLACE</a>
+                                )
+                            }
 
-                        {place.images?.length > 0 && (
-                            <div className={'mt-4 flex gap-4 overflow-x-auto'}>
-                                {place.images.map((url, i) => (
-                                    <img
-                                        key={i}
-                                        src={url}
-                                        alt={place.title}
-                                        style={{ width: 150, height: "auto", borderRadius: 6 }}
-                                    />
-                                ))}
-                            </div>
-                        )}
+                            {place.images?.length > 0 && (
+                                <div className={'mt-4 flex gap-4 overflow-x-auto min-w-sm'}>
+                                    {place.images.map((url, i) => (
+                                        <img
+                                            key={i}
+                                            src={url}
+                                            alt={place.title}
+                                            style={{ width: 150, height: "auto", borderRadius: 6 }}
+                                        />
+                                    ))}
+                                </div>
+                            )}
 
-                        {
-                            isAdmin &&
-                            <div className={'mt-8'}>
+                            {
+                                isAdmin &&
+                                <div className={'mt-8'}>
                                 <span onClick={() => onDeletePlace(place.id)}
                                       className={'text-red-500 cursor-pointer hover:underline'}>Eliminar</span>
-                            </div>
-                        }
+                                </div>
+                            }
                     </Popup>
                 </Marker>
             ))}
