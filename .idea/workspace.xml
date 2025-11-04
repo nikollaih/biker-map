@@ -5,24 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef0acd20-d424-4853-ba1f-8f07b8062674" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/cors.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/AuthButtons.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Header.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/PrimaryButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/TextArea.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Textinput.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/AuthContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MapView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MapView.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/firebase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/placeService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/placeService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +61,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762208970746</updated>
-      <workItem from="1762208972095" duration="11738000" />
+      <workItem from="1762208972095" duration="12003000" />
     </task>
     <servers />
   </component>
