@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import MapView from "./components/MapView";
 import AddPlaceModal from "./components/AddPlaceModal";
 import { getPlaces } from "./services/placeService";
+import {Header} from "./components/Header.jsx";
 
 export default function App() {
-    const [places, setPlaces] = useState([]);
+    const [places, setPlaces] = useState(null);
     const [open, setOpen] = useState(false);
 
     const load = async () => {
@@ -17,17 +18,14 @@ export default function App() {
     }, []);
 
     return (
-        <div style={{ height: "100vh", display: "flex", flexDirection: "column", width: '100vh', minWidth: "100vh" }}>
-            <header style={{ padding: 12, background: "#111827", color: "white", display: "flex", justifyContent: "space-between" }}>
-                <div>
-                    <button onClick={() => setOpen(true)} style={{ padding: "8px 12px" }}>Add place</button>
-                </div>
-            </header>
-
-            <main style={{ flex: 1 }}>
-                <MapView places={places} onNewPlace={() => load()} />
+        <div style={{ height: "100vh", display: "flex", flexDirection: "column", width: '100vw' }}>
+            <Header setOpen={setOpen} />
+            <main className={'flex-1'}>
+                {
+                    Array.isArray(places) &&
+                    <MapView places={places} onNewPlace={() => load()} onDelete={() => load()} />
+                }
             </main>
-
             <AddPlaceModal open={open} onClose={() => setOpen(false)} onSaved={() => { setOpen(false); load(); }} />
         </div>
     );

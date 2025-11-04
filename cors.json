@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://biker-map.netlify.app"],
+    "method": ["GET", "POST"],
+    "maxAgeSeconds": 3600
+  }
+]

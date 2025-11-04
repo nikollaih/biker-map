@@ -1,21 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { uploadImages, savePlace } from "../services/placeService";
+import { TextInput } from "./Textinput.jsx";
+import { PrimaryButton } from "./PrimaryButton.jsx";
+import { TextArea } from "./TextArea.jsx";
 
 export default function AddPlaceModal({ open, onClose, onSaved }) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [files, setFiles] = useState([]);
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
+    // agrupo la mayor parte del formulario en un solo estado
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        lat: "",
+        lng: "",
+        url: ""
+    });
+
+    // FileList se maneja por separado y mantenemos una ref al input para resetearlo
+    const [files, setFiles] = useState(null);
+    const fileInputRef = useRef(null);
+
     const [saving, setSaving] = useState(false);
 
-    if (!open) return null;
+    // handlers
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }, []);
 
-    const handleFiles = e => setFiles(e.target.files);
+    const handleFiles = useCallback((e) => {
+        setFiles(e.target.files && e.target.files.length ? e.target.files : null);
+    }, []);
 
-    const submit = async () => {
-        if (!title || !lat || !lng) {
-            alert("Title and coordinates required");
+    const resetForm = useCallback(() => {
+        setForm({
+            title: "",
+            description: "",
+            lat: "",
+            lng: "",
+            url: ""
+        });
+        setFiles(null);
+        if (fileInputRef.current) fileInputRef.current.value = null;
+    }, []);
+
+    const submit = useCallback(async () => {
+        const titleTrim = form.title?.trim();
+        if (!titleTrim || !form.lat || !form.lng) {
+            alert("El titulo y las coordenadas son requeridas.");
             return;
         }
 
@@ -23,60 +53,103 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
         try {
             const urls = files && files.length ? await uploadImages(files) : [];
             const place = {
-                title,
-                description,
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
+                title: titleTrim,
+                description: form.description,
+                url: form.url,
+                lat: parseFloat(form.lat),
+                lng: parseFloat(form.lng),
                 images: urls,
-                createdAt: new Date(),
+                createdAt: new Date()
             };
             await savePlace(place);
             onSaved();
-            // reset
-            setTitle(""); setDescription(""); setFiles([]); setLat(""); setLng("");
+            // reset campos
+            resetForm();
         } catch (err) {
             console.error(err);
-            alert("Error saving place");
+            alert("Error al guardar la ubicación.");
         } finally {
             setSaving(false);
         }
-    };
+    }, [form, files, onSaved, resetForm]);
+
+    if (!open) return null;
 
     return (
-        <div style={{
-            position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex",
-            alignItems: "center", justifyContent: "center", zIndex: 9999
-        }}>
-            <div style={{ width: 520, background: "white", padding: 20, borderRadius: 8 }}>
-                <h3>Add new place</h3>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Title</label>
-                    <input value={title} onChange={e => setTitle(e.target.value)} style={{ width: "100%" }} />
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Description</label>
-                    <textarea value={description} onChange={e => setDescription(e.target.value)} style={{ width: "100%" }} />
+        <div className="bg-[rgba(0,0,0,0.5)] backdrop-blur-sm flex overflow-y-auto overflow-x-hidden fixed inset-0 z-[9999] justify-center items-center w-full h-full">
+            <div className={'w-xl bg-white rounded-md p-4'}>
+                <h3 className={'text-gray-900 font-semibold mb-4 text-xl'}>Nueva ubicación</h3>
+
+                <div className={'mb-4'}>
+                    <TextInput
+                        name="title"
+                        label={'Titulo'}
+                        value={form.title}
+                        required={true}
+                        placeholder={'Viaje al oriente'}
+                        onChange={handleChange}
+                    />
                 </div>
 
-                <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                    <div style={{ flex: 1 }}>
-                        <label>Lat</label>
-                        <input value={lat} onChange={e => setLat(e.target.value)} placeholder="e.g. 4.7" />
+                <div className={'mb-4'}>
+                    <TextArea
+                        name="description"
+                        label={'Descripción'}
+                        value={form.description}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div className={'mb-4 flex gap-4'}>
+                    <div className={'flex-1'}>
+                        <TextInput
+                            name="lat"
+                            type={'number'}
+                            label={'Latitud'}
+                            required={true}
+                            placeholder={'4.4726263'}
+                            value={form.lat}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <div style={{ flex: 1 }}>
-                        <label>Lng</label>
-                        <input value={lng} onChange={e => setLng(e.target.value)} placeholder="e.g. -74.0" />
+                    <div className={'flex-1'}>
+                        <TextInput
+                            name="lng"
+                            type={'number'}
+                            label={'Longitud'}
+                            required={true}
+                            placeholder={'-73.2171831'}
+                            value={form.lng}
+                            onChange={handleChange}
+                        />
                     </div>
                 </div>
 
-                <div style={{ marginBottom: 12 }}>
-                    <label>Photos</label>
-                    <input type="file" multiple accept="image/*" onChange={handleFiles} />
+                <div className={'mb-4'}>
+                    <TextInput
+                        name="photos"
+                        label={'Fotos'}
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleFiles}
+                        ref={fileInputRef}
+                    />
+                </div>
+
+                <div className={'mb-5'}>
+                    <TextInput
+                        name="url"
+                        type={'url'}
+                        label={'URL'}
+                        value={form.url}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-                    <button onClick={onClose} disabled={saving}>Cancel</button>
-                    <button onClick={submit} disabled={saving}>{saving ? "Saving..." : "Save place"}</button>
+                    <PrimaryButton className={'!bg-gray-900'} onClick={onClose} disabled={saving} title={'Cancelar'} />
+                    <PrimaryButton onClick={submit} disabled={saving} title={saving ? "Guardando..." : "Guardar"} />
                 </div>
             </div>
         </div>
