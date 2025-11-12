@@ -16,15 +16,16 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function MapView({ places = [], onDelete }) {
+    const {user} = useAuth()
+    const UID = user?.uid;
     const center = places.length ? [places[0].lat, places[0].lng] : [4.3843286, -73.1784048];
-    const {isAdmin} = useAuth()
 
-    const onDeletePlace = async (placeId) => {
+    const onDeletePlace = async (placeId, UID) => {
         let userConfirmation = confirm("¿Estás seguro que deseas eliminar este lugar?");
 
         if (userConfirmation) {
             // Code to execute if the user clicked "OK"
-            const deleted = await deletePlace(placeId)
+            const deleted = await deletePlace(placeId, UID)
             if(deleted)
                onDelete();
         }
@@ -80,9 +81,9 @@ export default function MapView({ places = [], onDelete }) {
                             )}
 
                             {
-                                isAdmin &&
+                                UID === place.owner &&
                                 <div className={'mt-8'}>
-                                <span onClick={() => onDeletePlace(place.id)}
+                                <span onClick={() => onDeletePlace(place.id, UID)}
                                       className={'text-red-500 cursor-pointer hover:underline'}>Eliminar</span>
                                 </div>
                             }

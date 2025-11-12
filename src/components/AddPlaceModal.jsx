@@ -3,8 +3,11 @@ import { uploadImages, savePlace } from "../services/placeService";
 import { TextInput } from "./Textinput.jsx";
 import { PrimaryButton } from "./PrimaryButton.jsx";
 import { TextArea } from "./TextArea.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 
 export default function AddPlaceModal({ open, onClose, onSaved }) {
+    const user = useAuth();
+    const UID = user?.user?.uid ?? "";
     // agrupo la mayor parte del formulario en un solo estado
     const [form, setForm] = useState({
         title: "",
@@ -49,6 +52,11 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
             return;
         }
 
+        if(!UID){
+            alert("No es posible crear el registro.");
+            return;
+        }
+
         setSaving(true);
         try {
             const urls = files && files.length ? await uploadImages(files) : [];
@@ -59,9 +67,10 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
                 lat: parseFloat(form.lat),
                 lng: parseFloat(form.lng),
                 images: urls,
+                owner: UID,
                 createdAt: new Date()
             };
-            await savePlace(place);
+            await savePlace(place, UID);
             onSaved();
             // reset campos
             resetForm();

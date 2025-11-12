@@ -34,10 +34,8 @@ export function AuthProvider({ children }) {
         await firebaseSignOut(auth);
     }, []);
 
-    const isAdmin = !!user && user.email === ADMIN_EMAIL;
-
     return (
-        <AuthContext.Provider value={{ user, isAdmin, signInWithGoogle, signOut, initializing }}>
+        <AuthContext.Provider value={{ user, signInWithGoogle, signOut, initializing }}>
             {children}
         </AuthContext.Provider>
     );

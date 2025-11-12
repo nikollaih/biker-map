@@ -33,15 +33,15 @@ export async function uploadImages(files = []) {
  * Save a place object to Firestore
  * place = { title, description, lat, lng, images: [url], createdAt: timestamp }
  */
-export async function savePlace(place) {
-    const col = collection(db, "places");
+export async function savePlace(place, UID) {
+    const col = collection(db, `users/${UID}/places`);
     const docRef = await addDoc(col, place);
     return docRef.id;
 }
 
 /** Get all places ordered by createdAt */
-export async function getPlaces() {
-    const q = query(collection(db, "places"), orderBy("createdAt", "desc"));
+export async function getPlaces(UID) {
+    const q = query(collection(db, `users/${UID}/places`), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
     return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
@@ -70,13 +70,14 @@ function pathFromDownloadUrl(url) {
 /**
  * Delete a place document and (optionally) its images in Storage.
  * @param {string} placeId - Firestore document id
+ * @param UID
  * @returns {Promise<boolean>} true if deleted (or throws)
  */
-export async function deletePlace(placeId) {
+export async function deletePlace(placeId, UID) {
     if (!placeId) throw new Error("El identificador de la ubicación es requerido.");
 
     // read doc to get images (so caller doesn't have to pass them)
-    const docRef = doc(db, "places", placeId);
+    const docRef = doc(db, `users/${UID}/places`, placeId);
     const snapshot = await getDoc(docRef);
     if (!snapshot.exists()) {
         throw new Error(`No se ha encontrado la ubicación`);
