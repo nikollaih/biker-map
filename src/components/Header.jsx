@@ -6,7 +6,7 @@ import {Link, useSearchParams} from "react-router-dom";
 
 export const Header = ({setOpen, viewUID}) => {
     const [searchParams] = useSearchParams();
-    const isOwner = searchParams.get("isOwnder")?? 0
+    const isOwner = searchParams.get("isOwner")?? 0
     const {user} = useAuth()
     const UID = user?.uid ?? "";
     return <>
