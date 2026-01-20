@@ -9,7 +9,7 @@ import {useSearchParams} from "react-router-dom";
 export default function App() {
     const [searchParams] = useSearchParams();
     const {user} = useAuth()
-    const UID = searchParams.get("uid") || user?.uid || "1";
+    const UID = searchParams.get("uid") || user?.uid || "IxxEYNMlkqXhdxClh53FbDii5xt1";
 
     const [places, setPlaces] = useState(null);
     const [open, setOpen] = useState(false);
