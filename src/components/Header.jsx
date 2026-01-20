@@ -2,9 +2,11 @@ import React from "react";
 import AuthButtons from "./AuthButtons.jsx";
 import {useAuth} from "../context/AuthContext.jsx";
 import {PrimaryButton} from "./PrimaryButton.jsx";
-import {Link} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 
 export const Header = ({setOpen, viewUID}) => {
+    const [searchParams] = useSearchParams();
+    const isOwner = searchParams.get("isOwnder")?? 0
     const {user} = useAuth()
     const UID = user?.uid ?? "";
     return <>
@@ -15,7 +17,9 @@ export const Header = ({setOpen, viewUID}) => {
         </a>
 
         <div className={'flex justify-between gap-4 items-center'}>
-            <AuthButtons />
+            {
+                isOwner && <AuthButtons />
+            }
             {
                 viewUID === UID &&
                 <PrimaryButton title={'Nueva ubicación'} className={'bg-orange-600 cursor-pointer hover:bg-orange-700 rounded-sm'}
