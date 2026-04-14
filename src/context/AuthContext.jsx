@@ -5,8 +5,6 @@ import { GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut, onAuth
 
 const AuthContext = createContext(null);
 
-const ADMIN_EMAIL = import.meta.env.VITE_ALLOWED_EMAIL;
-
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [initializing, setInitializing] = useState(true);

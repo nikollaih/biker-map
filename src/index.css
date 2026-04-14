@@ -17,3 +17,30 @@
 .my-custom-marker {
   border-radius: 50% !important;
 }
+
+/* Leaflet popup close button */
+.leaflet-popup-close-button {
+  width: 24px !important;
+  height: 24px !important;
+  top: 8px !important;
+  right: 8px !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.leaflet-popup-close-button:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: #fff !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px;
+}

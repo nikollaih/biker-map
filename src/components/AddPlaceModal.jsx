@@ -1,100 +1,36 @@
-import React, { useState, useRef, useCallback } from "react";
-import { uploadImages, savePlace } from "../services/placeService";
+import React from "react";
 import { TextInput } from "./Textinput.jsx";
 import { PrimaryButton } from "./PrimaryButton.jsx";
 import { TextArea } from "./TextArea.jsx";
-import {useAuth} from "../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { usePlaceForm } from "../hooks/usePlaceForm.js";
 
-export default function AddPlaceModal({ open, onClose, onSaved }) {
-    const user = useAuth();
-    const UID = user?.user?.uid ?? "";
-    // agrupo la mayor parte del formulario en un solo estado
-    const [form, setForm] = useState({
-        title: "",
-        description: "",
-        lat: "",
-        lng: "",
-        url: ""
+export default function AddPlaceModal({ open, onClose, onSaved, defaultLat, defaultLng, editPlace }) {
+    const { user } = useAuth();
+    const UID = user?.uid ?? "";
+
+    const { form, saving, fileInputRef, handleChange, handleFiles, submit } = usePlaceForm({
+        UID,
+        onSaved,
+        defaultLat,
+        defaultLng,
+        open,
+        editPlace,
     });
-
-    // FileList se maneja por separado y mantenemos una ref al input para resetearlo
-    const [files, setFiles] = useState(null);
-    const fileInputRef = useRef(null);
-
-    const [saving, setSaving] = useState(false);
-
-    // handlers
-    const handleChange = useCallback((e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    }, []);
-
-    const handleFiles = useCallback((e) => {
-        setFiles(e.target.files && e.target.files.length ? e.target.files : null);
-    }, []);
-
-    const resetForm = useCallback(() => {
-        setForm({
-            title: "",
-            description: "",
-            lat: "",
-            lng: "",
-            url: ""
-        });
-        setFiles(null);
-        if (fileInputRef.current) fileInputRef.current.value = null;
-    }, []);
-
-    const submit = useCallback(async () => {
-        const titleTrim = form.title?.trim();
-        if (!titleTrim || !form.lat || !form.lng) {
-            alert("El titulo y las coordenadas son requeridas.");
-            return;
-        }
-
-        if(!UID){
-            alert("No es posible crear el registro.");
-            return;
-        }
-
-        setSaving(true);
-        try {
-            const urls = files && files.length ? await uploadImages(files) : [];
-            const place = {
-                title: titleTrim,
-                description: form.description,
-                url: form.url,
-                lat: parseFloat(form.lat),
-                lng: parseFloat(form.lng),
-                images: urls,
-                owner: UID,
-                createdAt: new Date()
-            };
-            await savePlace(place, UID);
-            onSaved();
-            // reset campos
-            resetForm();
-        } catch (err) {
-            console.error(err);
-            alert("Error al guardar la ubicación.");
-        } finally {
-            setSaving(false);
-        }
-    }, [form, files, onSaved, resetForm]);
 
     if (!open) return null;
 
     return (
         <div className="bg-[rgba(0,0,0,0.5)] backdrop-blur-sm flex overflow-y-auto overflow-x-hidden fixed inset-0 z-[9999] justify-center items-center w-full h-full">
             <div className={'w-xl bg-white rounded-md p-4'}>
-                <h3 className={'text-gray-900 font-semibold mb-4 text-xl'}>Nueva ubicación</h3>
+                <h3 className={'text-gray-900 font-semibold mb-4 text-xl'}>{editPlace ? "Editar ubicación" : "Nueva ubicación"}</h3>
 
                 <div className={'mb-4'}>
                     <TextInput
                         name="title"
                         label={'Titulo'}
                         value={form.title}
-                        required={true}
+                        required
                         placeholder={'Viaje al oriente'}
                         onChange={handleChange}
                     />
@@ -115,7 +51,7 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
                             name="lat"
                             type={'number'}
                             label={'Latitud'}
-                            required={true}
+                            required
                             placeholder={'4.4726263'}
                             value={form.lat}
                             onChange={handleChange}
@@ -126,7 +62,7 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
                             name="lng"
                             type={'number'}
                             label={'Longitud'}
-                            required={true}
+                            required
                             placeholder={'-73.2171831'}
                             value={form.lng}
                             onChange={handleChange}
@@ -137,9 +73,8 @@ export default function AddPlaceModal({ open, onClose, onSaved }) {
                 <div className={'mb-4'}>
                     <TextInput
                         name="photos"
-                        label={'Fotos'}
+                        label={'Foto'}
                         type="file"
-                        multiple
                         accept="image/*"
                         onChange={handleFiles}
                         ref={fileInputRef}

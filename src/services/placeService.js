@@ -8,25 +8,25 @@ import {
     doc,
     deleteDoc,
     getDoc,
+    updateDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 
-/**
- * Upload multiple files and return array of public URLs
- * @param {FileList | File[]} files
- */
-export async function uploadImages(files = []) {
-    const urls = [];
-    for (const file of Array.from(files)) {
-        const fileId = uuidv4();
-        const storageRef = ref(storage, `places/${fileId}_${file.name}`);
-        const snapshot = await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(snapshot.ref);
-        urls.push(url);
+export async function uploadImage(file) {
+    const storageRef = ref(storage, `places/${uuidv4()}_${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    return getDownloadURL(snapshot.ref);
+}
+
+export async function deleteImageByUrl(url) {
+    try {
+        const path = pathFromDownloadUrl(url);
+        if (path) await deleteObject(ref(storage, path));
+    } catch (err) {
+        console.warn("No se pudo eliminar la imagen:", err);
     }
-    return urls;
 }
 
 /**
@@ -37,6 +37,11 @@ export async function savePlace(place, UID) {
     const col = collection(db, `users/${UID}/places`);
     const docRef = await addDoc(col, place);
     return docRef.id;
+}
+
+export async function updatePlace(placeId, UID, data) {
+    const docRef = doc(db, `users/${UID}/places`, placeId);
+    await updateDoc(docRef, data);
 }
 
 /** Get all places ordered by createdAt */

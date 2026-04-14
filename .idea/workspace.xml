@@ -6,12 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="ef0acd20-d424-4853-ba1f-8f07b8062674" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/MapView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MapView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/placeService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/placeService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/user/Documents/dev/biker-map" value="34zGQX9lpY909W5mvaYyH7lwkuE" />
+    </persistenceIdMap>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -66,11 +75,20 @@
       <workItem from="1762974195398" duration="3028000" />
       <workItem from="1763090327848" duration="324000" />
       <workItem from="1764015864637" duration="732000" />
-      <workItem from="1768923413456" duration="1597000" />
+      <workItem from="1768923413456" duration="2414000" />
+      <workItem from="1776196814826" duration="1593000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
