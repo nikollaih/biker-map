@@ -49,7 +49,7 @@ export default function MapView({ places = [], onDelete, onLongPress, onEdit }) 
 
     return (
         <>
-        <MapContainer center={center} zoom={7} style={{ height: "100%", width: "100%" }}>
+        <MapContainer center={center} zoom={8} style={{ height: "100%", width: "100%" }}>
             <TileLayer
                 ext={'jpg'}
                 attribution='© OpenStreetMap contributors'
