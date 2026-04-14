@@ -9,6 +9,8 @@ export const CATEGORIES = [
     { id: 'camping',     label: 'Camping',     icon: '⛺' },
     { id: 'playa',       label: 'Playa / Lago',icon: '🏖️' },
     { id: 'ruta',        label: 'Ruta',        icon: '🛣️' },
+    { id: 'letrero',     label: 'Letrero',     icon: '🪧' },
+    { id: 'atraccion',   label: 'Atracción',   icon: '🎡' },
 ];
 
 export const getCategoryById = (id) => CATEGORIES.find((c) => c.id === id);
