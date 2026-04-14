@@ -4,6 +4,7 @@ import { deletePlace } from "../services/placeService.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useLongPress } from "../hooks/useLongPress.js";
 import ImageLightbox from "./ImageLightbox.jsx";
+import { getCategoryById } from "../constants/categories.js";
 import L from "leaflet";
 
 import iconUrl from "leaflet/dist/images/marker-icon.png";
@@ -74,7 +75,32 @@ export default function MapView({ places = [], onDelete, onLongPress, onEdit }) 
 
                             {/* Cuerpo */}
                             <div className={'py-3 flex flex-col gap-2'}>
-                                <h3 className={'text-gray-900 font-bold text-sm uppercase tracking-wide m-0'}>{place.title}</h3>
+                                <div className={'flex items-start justify-between gap-2'}>
+                                    <h3 className={'text-gray-900 font-bold text-sm uppercase tracking-wide m-0'}>{place.title}</h3>
+                                    {(place.travelDate || place.createdAt) && (
+                                        <span className={'text-gray-400 text-xs whitespace-nowrap shrink-0'}>
+                                            {place.travelDate
+                                                ? new Intl.DateTimeFormat('es', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+                                                    .format(new Date(place.travelDate))
+                                                : new Intl.DateTimeFormat('es', { day: 'numeric', month: 'short', year: 'numeric' })
+                                                    .format(place.createdAt?.toDate?.() ?? new Date(place.createdAt))
+                                            }
+                                        </span>
+                                    )}
+                                </div>
+
+                                {place.tags?.length > 0 && (
+                                    <div className={'flex gap-1.5 flex-wrap'}>
+                                        {place.tags.map((id) => {
+                                            const cat = getCategoryById(id);
+                                            return cat ? (
+                                                <span key={id} className={'inline-flex items-center gap-1 bg-orange-50 border border-orange-200 text-orange-600 text-xs px-2 py-0.5 rounded-full'}>
+                                                    {cat.icon} {cat.label}
+                                                </span>
+                                            ) : null;
+                                        })}
+                                    </div>
+                                )}
 
                                 {place.description && (
                                     <p className={'text-gray-600 text-sm m-0 leading-snug'}>{place.description}</p>

@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { uploadImage, savePlace, updatePlace, deleteImageByUrl } from "../services/placeService";
 import { compressImage } from "../utils/compressImage";
 
-const EMPTY_FORM = { title: "", description: "", lat: "", lng: "", url: "" };
+const EMPTY_FORM = { title: "", description: "", lat: "", lng: "", url: "", travelDate: "", tags: [] };
 
 export function usePlaceForm({ UID, onSaved, defaultLat, defaultLng, open, editPlace }) {
     const [form, setForm] = useState(EMPTY_FORM);
@@ -19,10 +19,19 @@ export function usePlaceForm({ UID, onSaved, defaultLat, defaultLng, open, editP
                 lat: String(editPlace.lat ?? ""),
                 lng: String(editPlace.lng ?? ""),
                 url: editPlace.url ?? "",
+                travelDate: editPlace.travelDate ?? "",
+                tags: editPlace.tags ?? [],
             });
-        } else if (defaultLat != null && defaultLng != null) {
-            setForm((prev) => ({ ...prev, lat: String(defaultLat), lng: String(defaultLng) }));
+        } else {
+            setForm({
+                ...EMPTY_FORM,
+                ...(defaultLat != null && defaultLng != null
+                    ? { lat: String(defaultLat), lng: String(defaultLng) }
+                    : {}),
+            });
         }
+        setFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = null;
     }, [open, editPlace, defaultLat, defaultLng]);
 
     const handleChange = useCallback((e) => {
@@ -67,6 +76,8 @@ export function usePlaceForm({ UID, onSaved, defaultLat, defaultLng, open, editP
                     lat: parseFloat(form.lat),
                     lng: parseFloat(form.lng),
                     images: imageUrl ? [imageUrl] : [],
+                    travelDate: form.travelDate || null,
+                    tags: form.tags,
                 });
             } else {
                 const imageUrl = file ? await uploadImage(await compressImage(file)) : null;
@@ -78,6 +89,8 @@ export function usePlaceForm({ UID, onSaved, defaultLat, defaultLng, open, editP
                         lat: parseFloat(form.lat),
                         lng: parseFloat(form.lng),
                         images: imageUrl ? [imageUrl] : [],
+                        travelDate: form.travelDate || null,
+                        tags: form.tags,
                         owner: UID,
                         createdAt: new Date(),
                     },
@@ -94,5 +107,9 @@ export function usePlaceForm({ UID, onSaved, defaultLat, defaultLng, open, editP
         }
     }, [form, file, UID, editPlace, onSaved, reset]);
 
-    return { form, file, saving, fileInputRef, handleChange, handleFiles, reset, submit };
+    const setFormField = useCallback((name, value) => {
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }, []);
+
+    return { form, file, saving, fileInputRef, handleChange, handleFiles, reset, submit, setFormField };
 }

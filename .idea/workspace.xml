@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ef0acd20-d424-4853-ba1f-8f07b8062674" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddPlaceModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/MapView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MapView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/placeService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/placeService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/usePlaceForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/usePlaceForm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +74,7 @@
       <workItem from="1763090327848" duration="324000" />
       <workItem from="1764015864637" duration="732000" />
       <workItem from="1768923413456" duration="2414000" />
-      <workItem from="1776196814826" duration="1593000" />
+      <workItem from="1776196814826" duration="2557000" />
     </task>
     <servers />
   </component>
