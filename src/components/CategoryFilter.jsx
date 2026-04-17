@@ -1,7 +1,12 @@
 import { CATEGORIES } from "../constants/categories.js";
+import { trackCategoryFilter } from "../utils/analytics.js";
 
 export default function CategoryFilter({ active, onChange }) {
-    const toggle = (id) => onChange(active === id ? null : id);
+    const toggle = (id) => {
+        const next = active === id ? null : id;
+        onChange(next);
+        trackCategoryFilter(next);
+    };
 
     return (
         <div className={'flex gap-2 overflow-x-auto px-3 py-2 bg-white border-b border-gray-100 scrollbar-none'}>

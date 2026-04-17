@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useLongPress } from "../hooks/useLongPress.js";
 import ImageLightbox from "./ImageLightbox.jsx";
 import { getCategoryById } from "../constants/categories.js";
+import { trackPlaceOpened } from "../utils/analytics.js";
 import L from "leaflet";
 
 import iconUrl from "leaflet/dist/images/marker-icon.png";
@@ -59,7 +60,7 @@ export default function MapView({ places = [], onDelete, onLongPress, onEdit }) 
             {onLongPress && <LongPressHandler onLongPress={onLongPress} />}
 
             {places.map((place) => (
-                <Marker key={place.id} position={[place.lat, place.lng]} icon={customIcon}>
+                <Marker key={place.id} position={[place.lat, place.lng]} icon={customIcon} eventHandlers={{ popupopen: () => trackPlaceOpened(place) }}>
                     <Popup minWidth={300} maxWidth={320}>
                         <div className={'w-[300px] flex flex-col'}>
 

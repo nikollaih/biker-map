@@ -3,6 +3,7 @@ import AuthButtons from "./AuthButtons.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { PrimaryButton } from "./PrimaryButton.jsx";
 import { Link, useSearchParams } from "react-router-dom";
+import { trackInstagramClick, trackViewChange } from "../utils/analytics.js";
 
 const MapIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className={'w-4 h-4'} viewBox="0 0 20 20" fill="currentColor">
@@ -33,7 +34,7 @@ export const Header = ({ setOpen, viewUID, placeCount, view, onViewChange }) => 
             <div className={'flex items-center justify-between px-3 py-2 gap-2'}>
 
                 {/* Logo */}
-                <a href="https://m.instagram.com/2almas1maquina" target={'_blank'} className={'flex items-center gap-2 shrink-0'}>
+                <a href="https://m.instagram.com/2almas1maquina" target={'_blank'} onClick={trackInstagramClick} className={'flex items-center gap-2 shrink-0'}>
                     <img src="/logo-2A1M.jpeg" alt="" className={'w-9 h-9 rounded-full object-cover'} />
                     <span className={'text-gray-900 text-sm hidden sm:block'}>@2almas1maquina</span>
                 </a>
@@ -54,7 +55,7 @@ export const Header = ({ setOpen, viewUID, placeCount, view, onViewChange }) => 
                     {/* Toggle mapa / galería */}
                     <div className={'flex bg-gray-100 rounded-lg p-0.5'}>
                         <button
-                            onClick={() => onViewChange('map')}
+                            onClick={() => { onViewChange('map'); trackViewChange('map'); }}
                             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
                                 view === 'map' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                             }`}
@@ -63,7 +64,7 @@ export const Header = ({ setOpen, viewUID, placeCount, view, onViewChange }) => 
                             <span className={'hidden sm:block'}>Mapa</span>
                         </button>
                         <button
-                            onClick={() => onViewChange('gallery')}
+                            onClick={() => { onViewChange('gallery'); trackViewChange('gallery'); }}
                             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
                                 view === 'gallery' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                             }`}
